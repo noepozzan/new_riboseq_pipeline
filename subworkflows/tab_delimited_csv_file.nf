@@ -8,7 +8,7 @@ workflow TAB_DELIMITED_CDS_FILE {
 	python_script
 
     main:
-    EXTRACT_TRANSCRIPT_SEQUENCES( gtf, transcripts, python_scripts )
+    CREATE_TAB_DELIMITED_CDS_FILE( gtf, transcripts, python_scripts )
 
     emit:
 	cds_tsv = CREATE_TAB_DELIMITED_CDS_FILE.out.cds_tsv

@@ -8,7 +8,7 @@ workflow P_SITE_OFFSET {
 	python_script
 
     main:
-    DETERMINE_P_SITE_OFFSET( sam, id_CDS, python_script )
+    DETERMINE_P_SITE_OFFSET( bam_folder, id_CDS, python_script )
 
     emit:
 	offset = DETERMINE_P_SITE_OFFSET.out.offset

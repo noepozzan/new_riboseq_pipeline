@@ -69,48 +69,78 @@ if (params.help) {
 
 workflow {
 
-    PULL_CONTAINERS(  config_file_ch,
-		      pull_file_ch  )
 
-    CHECK_FILES_PIPE(  riboseq_reads_ch,
-		       proteomics_reads_ch,
-		       genome_ch,
-		       genome_fai_ch,
-		       gtf_ch,
-		       other_RNAs_sequence_ch,
-		       check_files_script_ch  )
+	if ( !params.skip_pull_containers) {
+    	PULL_CONTAINERS(  config_file_ch, pull_file_ch  )
+	}
 
-    RIBOSEQ_ANNOTATE_PIPE(  gtf_ch,
-                            lct_script_ch,
-                            other_RNAs_sequence_ch,
-                            genome_ch,
-                            ctdCDS_script_ch  )
+    CHECK_FILES_PIPE(
+		riboseq_reads_ch,
+		proteomics_reads_ch,
+		genome_ch,
+		genome_fai_ch,
+		gtf_ch,
+		other_RNAs_sequence_ch,
+		check_files_script_ch
+	)
 
-    RIBOSEQ_PROCESS_DATA_PIPE(  riboseq_reads_ch,
-                                oligos_ch,
-                                other_RNAs_sequence_ch,
-                                count_oligos_script_ch,
-                                RIBOSEQ_ANNOTATE_PIPE.out.other_RNAs_sequence_idx,
-                                RIBOSEQ_ANNOTATE_PIPE.out.genome_idx,
-                                find_overrepresented_sequences_script_ch,
-                                RIBOSEQ_ANNOTATE_PIPE.out.longest_pc_transcript_per_gene_fa,
-                                plot_read_lengths_script_ch,
-                                RIBOSEQ_ANNOTATE_PIPE.out.transcript_id_gene_id_CDS_tsv,
-                                determine_p_site_offsets_script_ch,
-                                count_reads_script_ch,
-                                check_periodicity_script_ch,
-                                filter_reads_based_on_read_lengths_and_offsets_script_ch,
-								gtf_ch  )
-    
-    RIBOTISH_PIPE(  gtf_ch,
-		    RIBOSEQ_PROCESS_DATA_PIPE.out.bam_sort_index_folder,
-		    genome_ch  )
+	PREPARE_READS(
+		proteomics_reads_ch
+	)
+	fasta_reads = PREPARE_READS.out.fasta_reads
 
 
-    PHILOSOPHER_PIPE(  RIBOTISH_PIPE.out.ribotish_predict.collect(),
-		       proteomics_reads_ch,
-		       philosopher_db_ch,
-		       change_file_script_ch  )      
+
+	if (params.aligner_genome == "star" && ) {
+
+		INDEX_MAP_STAR(
+
+		)
+
+	}
+
+	if (params.aligner_genome == "segemehl" && ) {
+		INDEX_MAP_SEGEMEHL(
+		
+
+		)
+	}
+
+	if (!params.run_qc) {
+
+		QC(
+			segemehl mapping sam output,
+			plot_read_lengths_script_ch,
+			segemehl bam folder,
+			id cds file from prepare gtf process,
+			determine_p_site_offsets_script_ch,
+			count_reads_script_ch,
+			check_periodicity_script_ch,
+			filter_reads_based_on_read_lengths_and_offsets_script_ch
+		)
+	}
+
+	if (!params... ) {
+
+    	RIBOTISH(
+			gtf_ch,
+			....out.bam_sort_index_folder,
+		    genome_ch
+		)
+	}
+	ribo_pred = RIBOTISH.out.
+
+	if (!params.skip_philosopher) {
+
+		PHILOSOPHER(
+			RIBOTISH.out.ribotish_predict.collect(),
+			proteomics_reads_ch,
+			philosopher_db_ch,
+			change_file_script_ch
+	)	
+
+	}
+          
   
   
 

@@ -1,6 +1,6 @@
-include { CREATE_TAB_DELIMITED_CDS_FILE } from '../modules/create_tab_delimited_cds_file.nf'
+include { CREATE_BED_CDS_FILE } from '../modules/create_bed_cds_file.nf'
 
-workflow TAB_DELIMITED_CDS_FILE {
+workflow BED_CDS_FILE {
 
     take:
 	tsv
