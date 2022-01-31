@@ -2,7 +2,7 @@ process FASTQ_TO_FASTA {
 
     label "fastx"
 
-    publishDir "${params.riboseq_process_data_outDir}/fastq_to_fasta", mode: 'copy'
+    publishDir "results/fastq_to_fasta", mode: 'copy'
 
     input:
     path reads

@@ -2,7 +2,7 @@ process PEPTIDEPROPHET {
 
     label "philosopher"
 
-    publishDir "${params.philosopher_outDir}/peptideprophet", mode: 'copy'
+    publishDir "results/peptideprophet", mode: 'copy'
 
     input:
     path db

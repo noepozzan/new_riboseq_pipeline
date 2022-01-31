@@ -2,7 +2,7 @@ process COUNT_OVERREPRESENTED_SEQUENCES {
 
     label "pysam"
 
-    publishDir "${params.riboseq_process_data_outDir}/count_overrepresented_sequences", mode: 'copy'
+    publishDir "results/count_overrepresented_sequences", mode: 'copy'
 
     input:
     each(path(sam))

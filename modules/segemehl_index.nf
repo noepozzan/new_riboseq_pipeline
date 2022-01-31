@@ -2,7 +2,7 @@ process SEGEMEHL_INDEX {
 
     label "segemehl"
 
-    publishDir "${params.riboseq_annotate_outDir}/segemehl_index", mode: 'copy'
+    publishDir "results/segemehl_index", mode: 'copy'
 
     input:
     path sequence

@@ -42,7 +42,7 @@ workflow RIBOSEQ {
 	if ( params.aligner_rrnas == "segemehl" ) {
         
 		INDEX_MAP_SEGEMEHL_rRNA(
-            longest_ct_fa,
+            other_RNAs_sequence_ch,
             fasta_reads
         )
         unmapped_reads_fasta = INDEX_MAP_SEGEMEHL_rRNA.out.unmapped_reads_fasta
@@ -53,7 +53,7 @@ workflow RIBOSEQ {
 	unique_mapped_sam = Channel.empty()
 	transcriptome_bam_folder = Channel.empty()
 
-	// map reads to the genome either with segemehl or star below
+	// map reads to transcripts for further
 	if ( params.aligner_transcripts == "segemehl" ) {
         
 		INDEX_MAP_SEGEMEHL_TRANSCRIPTOME(

@@ -3,7 +3,7 @@ process STAR_MAP {
     label "star"
     label "heavy_computation"
 
-    publishDir "${params.riboseq_process_data_outDir}/star_map", mode: 'copy'
+    publishDir "results/star_map", mode: 'copy'
 
     input:
     each(path(reads))

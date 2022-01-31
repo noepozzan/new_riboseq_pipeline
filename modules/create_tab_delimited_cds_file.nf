@@ -2,7 +2,7 @@ process CREATE_TAB_DELIMITED_CDS_FILE {
 
     label "htseq_biopython"
 
-    publishDir "${params.riboseq_annotate_outDir}/create_tab_delimited_CDS_file", mode: 'copy'
+    publishDir "results/create_tab_delimited_CDS_file", mode: 'copy'
 
     input:
     path gtf

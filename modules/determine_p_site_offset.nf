@@ -2,7 +2,7 @@ process DETERMINE_P_SITE_OFFSET {
 
     label "pysam"
 
-    publishDir "${params.riboseq_process_data_outDir}/determine_p_site_offset", mode: 'copy'
+    publishDir "results/determine_p_site_offset", mode: 'copy'
 
     input:
     each(path(bam_folder))

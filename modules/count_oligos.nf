@@ -2,7 +2,7 @@ process COUNT_OLIGOS {
 
     label "htseq_biopython"
 
-    publishDir "${params.riboseq_process_data_outDir}/count_oligos", mode: 'copy'
+    publishDir "results/count_oligos", mode: 'copy'
 
     input:
     each(path(reads))

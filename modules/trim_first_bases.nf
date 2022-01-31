@@ -2,7 +2,7 @@ process TRIM_FIRST_BASES {
 
     label "cutadapt"
 
-    publishDir "${params.riboseq_process_data_outDir}/trim_first_bases", mode: 'copy'
+    publishDir "results/trim_first_bases", mode: 'copy'
 
     input:
     path reads

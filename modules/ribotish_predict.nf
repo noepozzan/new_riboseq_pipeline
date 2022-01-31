@@ -3,7 +3,7 @@ process RIBOTISH_PREDICT {
     label "ribotish"
     //label "heavy_computation"
 
-    publishDir "${params.ribotish_connect_outDir}/ribotish_predict", mode: 'copy'
+    publishDir "results/ribotish_predict", mode: 'copy'
 
     input:
     each(path(bam_sort_index_folder))

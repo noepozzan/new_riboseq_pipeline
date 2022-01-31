@@ -2,7 +2,7 @@ process SELECT_LONGEST_CODING_TRANSCRIPT {
 
     label "htseq"
 
-    publishDir "${params.riboseq_annotate_outDir}/select_longest_coding_transcript", mode: 'copy'
+    publishDir "results/select_longest_coding_transcript", mode: 'copy'
 
     input:
     path input_gtf

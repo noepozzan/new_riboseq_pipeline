@@ -2,7 +2,7 @@ process MSFRAGGER {
 
     label "msfragger"
 
-    publishDir "${params.philosopher_outDir}/msfragger/", mode: 'copy'
+    publishDir "results/msfragger/", mode: 'copy'
 
     input:
     path mzML_file

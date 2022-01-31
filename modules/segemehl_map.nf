@@ -3,7 +3,7 @@ process SEGEMEHL_MAP {
     label "segemehl"
     label "heavy_computation"
 
-    publishDir "${params.riboseq_process_data_outDir}/segemehl_map", mode: 'copy'
+    publishDir "results/segemehl_map", mode: 'copy'
 
     input:
     each(path(reads))

@@ -2,7 +2,7 @@ process CHECK_PERIODICITY {
 
     label "rcrunch_python"
 
-    publishDir "${params.riboseq_process_data_outDir}/check_periodicity", mode: 'copy'
+    publishDir "results/check_periodicity", mode: 'copy'
 
     input:
     each(path(bam_folder))

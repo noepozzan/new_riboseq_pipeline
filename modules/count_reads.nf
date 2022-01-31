@@ -2,7 +2,7 @@ process COUNT_READS {
 
     label "pysam"
 
-    publishDir "${params.riboseq_process_data_outDir}/count_reads", mode: 'copy'
+    publishDir "results/count_reads", mode: 'copy'
 
     input:
     each(path(bam_folder))

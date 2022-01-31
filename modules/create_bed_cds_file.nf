@@ -2,7 +2,7 @@ process CREATE_BED_CDS_FILE {
 
     label "htseq_biopython"
 
-    publishDir "${params.riboseq_annotate_outDir}/create_bed_cds_file", mode: 'copy'
+    publishDir "results/create_bed_cds_file", mode: 'copy'
 
     input:
     path tsv

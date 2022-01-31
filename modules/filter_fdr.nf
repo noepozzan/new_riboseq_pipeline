@@ -2,7 +2,7 @@ process FILTER_FDR {
     
     label "philosopher"
     
-    publishDir "${params.philosopher_outDir}/filterandfdr", mode: 'copy'
+    publishDir "results/filterandfdr", mode: 'copy'
     
     input:
     path pepxml

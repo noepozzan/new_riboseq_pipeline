@@ -2,7 +2,7 @@ process SAMTOOLS {
 
     label "samtools"
 
-    publishDir "${params.riboseq_process_data_outDir}/samtools", mode: 'copy'
+    publishDir "results/samtools", mode: 'copy'
 
     input:
     path sam

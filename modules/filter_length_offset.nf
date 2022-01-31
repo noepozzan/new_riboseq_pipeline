@@ -2,7 +2,7 @@ process FILTER_LENGTH_OFFSET {
 
     label "pysam"
 
-    publishDir "${params.riboseq_process_data_outDir}/filter_length_offset", mode: 'copy'
+    publishDir "results/filter_length_offset", mode: 'copy'
 
     input:
     each(path(bam_folder))

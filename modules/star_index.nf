@@ -2,7 +2,7 @@ process STAR_INDEX {
 
     label 'star'
 
-    publishDir "${params.riboseq_annotate_outDir}/star_index", mode: 'copy'
+    publishDir "results/star_index", mode: 'copy'
 
     input:
     path sequence

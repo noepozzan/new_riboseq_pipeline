@@ -2,7 +2,7 @@ process TRIM_READS {
 
     label "fastx"
 
-    publishDir "${params.riboseq_process_data_outDir}/trim_reads", mode: 'copy'
+    publishDir "results/trim_reads", mode: 'copy'
 
     input:
     path reads

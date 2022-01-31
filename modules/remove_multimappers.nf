@@ -2,7 +2,7 @@ process REMOVE_MULTIMAPPERS {
 
     label "pysam"
 
-    publishDir "${params.riboseq_process_data_outDir}/remove_multimappers", mode: 'copy'
+    publishDir "results/remove_multimappers", mode: 'copy'
 
     input:
     path mapped_sam

@@ -25,15 +25,6 @@ if (params.help) {
 }
 
 
-gtf_ch = channel.fromPath('./data/Mus_musculus.GRCm38.99.chr.gtf')
-other_RNAs_sequence_ch = channel.fromPath('./data/mm10_rrnas.fa')
-genome_ch = channel.fromPath('./data/Mus_musculus.GRCm38.dna_sm.primary_assembly.fa')
-riboseq_reads_ch = channel.fromPath('./data/riboseq_reads/*.gz')
-oligos_ch = channel.fromPath('./data/oligos.txt')
-proteomics_reads_ch = channel.fromPath('./data/proteomics_reads/*.mzML')
-//only temporary, to be deleted as soon as ribotish outputs fasta file of predicted sORFs
-philosopher_db_ch = channel.fromPath('./data/small_peptides_all_quad_samples.fasta')
-
 
 workflow {
 

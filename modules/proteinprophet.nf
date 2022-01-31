@@ -2,7 +2,7 @@ process PROTEINPROPHET {
     
     label "philosopher"
     
-    publishDir "${params.philosopher_outDir}/proteinprophet", mode: 'copy'
+    publishDir "results/proteinprophet", mode: 'copy'
        
     input:
     path pepxml

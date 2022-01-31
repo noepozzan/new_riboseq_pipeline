@@ -2,7 +2,7 @@ process RIBOTISH_QUALITY {
 
     label "ribotish"
 
-    publishDir "${params.ribotish_connect_outDir}/ribotish_quality", mode: 'copy'
+    publishDir "results/ribotish_quality", mode: 'copy'
 
     input:
     each(path(bam_sort_index_folder))

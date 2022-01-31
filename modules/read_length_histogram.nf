@@ -2,7 +2,7 @@ process READ_LENGTH_HISTOGRAM {
 
     label "rcrunch_python"
 
-    publishDir "${params.riboseq_process_data_outDir}/read_length_histogram", mode: 'copy'
+    publishDir "results/read_length_histogram", mode: 'copy'
 
     input:
     each(path(sam))

@@ -2,7 +2,7 @@ process EXTRACT_TRANSCRIPT_SEQUENCES {
 
     label "cufflinks"
 
-    publishDir "${params.riboseq_annotate_outDir}/extract_transcript_sequences", mode: 'copy'
+    publishDir "results/extract_transcript_sequences", mode: 'copy'
 
     input:
     path gtf

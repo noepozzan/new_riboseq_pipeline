@@ -2,7 +2,7 @@ process GENERATE_CHANGE_PARAMS {
 
     label 'msfragger'
 
-    publishDir "${params.philosopher_outDir}/generate_change_params", mode: 'copy'
+    publishDir "results/generate_change_params", mode: 'copy'
 
     input:
     path db

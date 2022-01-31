@@ -2,7 +2,7 @@ process QUANTIFY {
 
     label "philosopher"
 
-    publishDir "${params.philosopher_outDir}/quantify", mode: 'copy'
+    publishDir "results/quantify", mode: 'copy'
 
     input:
     val filterandfdr

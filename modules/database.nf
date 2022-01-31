@@ -2,7 +2,7 @@ process DATABASE {
 
     label 'philosopher'
 
-    publishDir "${params.philosopher_outDir}/database", mode: 'copy'
+    publishDir "results/database", mode: 'copy'
 
     input:
     val workspace

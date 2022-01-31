@@ -2,7 +2,7 @@ process REPORT {
 
     label "philosopher"
 
-    publishDir "${params.philosopher_outDir}/report", mode: 'copy'
+    publishDir "results/report", mode: 'copy'
 
     input:
     val freequant
@@ -17,6 +17,7 @@ process REPORT {
     cd ${params.workspace}
     philosopher report --msstats 2> report.out
 
+	cp msstats.csv peptide.tsv psm.tsv ion.tsv  \$workd
     """
 
 }

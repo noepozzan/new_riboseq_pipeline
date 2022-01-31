@@ -2,7 +2,7 @@ process FILTER_READS {
 
     label "fastx"
 
-    publishDir "${params.riboseq_process_data_outDir}/filter_reads", mode: 'copy'
+    publishDir "results/filter_reads", mode: 'copy'
 
     input:
     path reads
