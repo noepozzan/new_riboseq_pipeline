@@ -13,7 +13,6 @@ process MSFRAGGER {
     path '*.pepXML', emit: pepXML
 
     script:
-    if (params.fragger_mode == "docker" )
     """
     workd=\$(pwd)
 

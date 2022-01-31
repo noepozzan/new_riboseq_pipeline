@@ -9,7 +9,7 @@ process SAMTOOLS {
 
     output:
     path '*.bam', emit: bam
-	path '*.bam.bai, emit: bai
+	path '*.bam.bai', emit: bai
     path '*.folder*', emit: bam_folder
 
     script:

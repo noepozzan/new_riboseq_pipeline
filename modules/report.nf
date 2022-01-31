@@ -17,7 +17,6 @@ process REPORT {
     cd ${params.workspace}
     philosopher report --msstats 2> report.out
 
-    cp msstats.csv \$workd
     """
 
 }

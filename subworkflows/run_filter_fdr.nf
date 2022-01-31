@@ -1,4 +1,4 @@
-include { FILTERANDFDR } from '../modules/filterandfdr.nf'
+include { FILTER_FDR } from '../modules/filter_fdr.nf'
 
 workflow RUN_FILTER_FDR {
 
@@ -7,9 +7,9 @@ workflow RUN_FILTER_FDR {
 	protxml
 
     main:
-	FILTERANDFDR( pepxml, protxml )
+	FILTER_FDR( pepxml, protxml )
 
     emit:
-	filter_fdr = FILTERANDFDR.out.filter_fdr
+	filter_fdr = FILTER_FDR.out.filter_fdr
 
 }

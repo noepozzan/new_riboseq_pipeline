@@ -3,10 +3,10 @@ include { PROTEINPROPHET } from '../modules/proteinprophet.nf'
 workflow RUN_PROTEINPROPHET {
 
     take:
-    pep_XML
+    interact_pep_xml
 
     main:
-    PROTEINPROPHET( pep_xml )
+    PROTEINPROPHET( interact_pep_xml )
 
     emit:
     prot_xml = PROTEINPROPHET.out.prot_xml

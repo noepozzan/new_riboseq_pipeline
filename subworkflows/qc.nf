@@ -11,7 +11,7 @@ workflow QC {
 	take:
 	
 	// remove reads that map to multiple loci
-	sam
+	unique_sam
 
 	// histogram of riboseq read length
 	histogram_python_script
@@ -31,12 +31,13 @@ workflow QC {
 	filter_python_script
 
 	main:
-
+/*
 	REMOVE_MULTIMAPPERS(
 		sam
 	)
 	unique_sam = REMOVE_MULTIMAPPERS.out.unique_sam
-
+*/
+	
 	READ_LENGTH_HISTOGRAM( unique_sam, histogram_python_script )
 	
 	DETERMINE_P_SITE_OFFSET(

@@ -10,6 +10,6 @@ workflow RUN_PEPTIDEPROPHET {
     PEPTIDEPROPHET( db, pepXML )
 
     emit:
-    pep_xml = PEPTIDEPROPHET.out.pep_xml
+    interact.pep.xml = PEPTIDEPROPHET.out.interact.pep.xml
 
 }

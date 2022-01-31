@@ -16,12 +16,13 @@ workflow INDEX_MAP_STAR {
 	
 	STAR_MAP( reads, star_index, gtf )
 
-    emit:
-    
-	star_index = STAR_INDEX.out.star_index
-
 	mapped_reads_sam = STAR_MAP.out.mapped_reads_sam
     unmapped_reads_fastx = STAR_MAP.out.unmapped_reads_fastx
+
+    emit:
+	star_index
+	mapped_reads_sam
+    unmapped_reads_fastx
 
 }
 

@@ -9,7 +9,7 @@ process PEPTIDEPROPHET {
     path pepXML
     
     output:
-    path "*.pep.xml", emit: pep_xml
+    path "*interact.pep.xml", emit: interact_pep_xml
     
     script:
     """
