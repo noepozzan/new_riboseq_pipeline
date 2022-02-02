@@ -22,6 +22,12 @@ proteomics_reads_ch = channel.fromPath('./data/proteomics_reads/*.mzML')
 philosopher_db_ch = channel.fromPath('./data/small_peptides_all_quad_samples.fasta')
 
 
+unmapped_reads_fasta = Channel.empty()
+ribo_pred = Channel.empty()
+genome_bam_folder = Channel.empty()
+unique_mapped_sam = Channel.empty()
+transcriptome_bam_folder = Channel.empty()
+
 workflow RIBOSEQ {
 
 	PREPARE_READS(
@@ -45,20 +51,16 @@ workflow RIBOSEQ {
             other_RNAs_sequence_ch,
             fasta_reads
         )
-        unmapped_reads_fasta = INDEX_MAP_SEGEMEHL_rRNA.out.unmapped_reads_fasta
+        //unmapped_reads_fasta = INDEX_MAP_SEGEMEHL_rRNA.out.unmapped_reads_fasta
     }
 
-
-
-	unique_mapped_sam = Channel.empty()
-	transcriptome_bam_folder = Channel.empty()
 
 	// map reads to transcripts for further
 	if ( params.aligner_transcripts == "segemehl" ) {
         
 		INDEX_MAP_SEGEMEHL_TRANSCRIPTOME(
             longest_ct_fa,
-            unmapped_reads_fasta
+            INDEX_MAP_SEGEMEHL_rRNA.out.unmapped_reads_fasta
         )
         transcriptome_mapped_sam = INDEX_MAP_SEGEMEHL_TRANSCRIPTOME.out.mapped_reads_sam
     
@@ -72,7 +74,6 @@ workflow RIBOSEQ {
 		unique_mapped_sam = REMOVE_MULTIMAPPERS.out.unique_sam
 	}
 	
-	genome_bam_folder = Channel.empty()
 
 	if ( params.aligner_genome == "star" ) {
 
@@ -117,8 +118,6 @@ workflow RIBOSEQ {
 
 	}
 
-
-	ribo_pred = Channel.empty()
 
 	if ( !params.skip_ribotish ) {
 

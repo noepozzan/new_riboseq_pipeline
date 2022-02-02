@@ -16,7 +16,7 @@ process DATABASE {
     workd=\$(pwd)
 
     cd ${params.workspace}
-    philosopher database --custom ${db} --contam
+    philosopher database --custom ${db} #--contam
 
     cp ${params.workspace}/*.fas \$workd
 
