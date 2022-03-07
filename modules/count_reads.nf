@@ -2,44 +2,36 @@ process COUNT_READS {
 
     label "pysam"
 
-    publishDir "results/count_reads", mode: 'copy'
+    publishDir "${params.qc_dir}/count_reads", mode: 'copy'
 
     input:
-    each(path(bam_folder))
+    each(path(bam_folder_offsets))
     path transcript_id_gene_id_CDS
-    each(path(p_site_offsets))
     path script_py
 
     output:
-    path '*.counts.tsv', emit: counts, optional: true
+    path '*.counts.tsv' optional true
 
     script:
     """
     workd=\$(pwd)
-    input1=\$(basename ${bam_folder})
-    prefix1=\$(echo \$input1 | cut -d '.' -f 1)
-    input2=\$(basename ${p_site_offsets})
-    prefix2=\$(echo \$input2 | cut -d '.' -f 1)
+    input=\$(basename ${bam_folder_offsets[0]})
+    prefix=\$(echo \$input | cut -d '.' -f 1)
 
-    if [ "\$prefix1" == "\$prefix2" ]; then
+    cp ${bam_folder_offsets[0]}/* .
 
-    cp ${bam_folder}/* .
-
-        mkdir \${prefix1}.count_reads
+    mkdir \${prefix}.count_reads
 
     python ${script_py} \
-                --bam \${prefix1}.transcripts_mapped_unique_sorted_bam \
-                --tsv ${transcript_id_gene_id_CDS} \
-                --json ${p_site_offsets} \
-                --outdir \${prefix1}.count_reads
+        --bam *.bam \
+        --tsv ${transcript_id_gene_id_CDS} \
+        --json ${bam_folder_offsets[1]} \
+        --outdir \${prefix}.count_reads
 
-        cp \${prefix1}.count_reads/* .
-        mv counts.tsv \${prefix1}.counts.tsv
-
-    fi
+    cp \${prefix}.count_reads/* .
+    mv counts.tsv \${prefix}.counts.tsv
 
     """
 
 }
-
 

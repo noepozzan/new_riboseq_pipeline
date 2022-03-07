@@ -2,7 +2,7 @@ process FASTQ_TO_FASTA {
 
     label "fastx"
 
-    publishDir "results/fastq_to_fasta", mode: 'copy'
+    publishDir "${params.reads_dir}/fastq_to_fasta", mode: 'copy'
 
     input:
     path reads
@@ -16,12 +16,10 @@ process FASTQ_TO_FASTA {
     prefix=\$(echo \$input | cut -d '.' -f 1)
 
     fastq_to_fasta \
-    ${params.fq_to_fa_v} \
-    ${params.fq_to_fa_n} \
-    ${params.fq_to_fa_r} \
-    -i <(zcat ${reads}) \
-    -o \${prefix}.pro_filtered_fasta \
-	2> \${prefix}_fastq_to_fasta.log
+        ${params.fastq_to_fasta_args} \
+        -i <(zcat ${reads}) \
+        -o \${prefix}.pro_filtered_fasta \
+        &> \${prefix}_fastq_to_fasta.log
 
     """
 

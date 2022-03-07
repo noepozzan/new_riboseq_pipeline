@@ -1,3 +1,5 @@
+nextflow.enable.dsl=2
+
 include { WORKSPACE } from '../modules/workspace.nf'
 include { DATABASE } from '../modules/database.nf'
 include { GENERATE_CHANGE_PARAMS } from '../modules/generate_change_params.nf'
@@ -5,59 +7,53 @@ include { MSFRAGGER } from '../modules/msfragger.nf'
 include { PEPTIDEPROPHET } from '../modules/peptideprophet.nf'
 include { PROTEINPROPHET } from '../modules/proteinprophet.nf'
 include { FILTER_FDR } from '../modules/filter_fdr.nf'
-include { QUANTIFY } from '../modules/quantify.nf'
+include { FREEQUANT } from '../modules/freequant.nf'
+include { IONQUANT } from '../modules/ionquant.nf'
 include { REPORT } from '../modules/report.nf'
 include { CLEAN_UP_WORKSPACE } from '../modules/clean_up_workspace.nf'
 
 
 workflow PHILOSOPHER {
 
-	take:
-	
-	// initialize workspace
-	ribo_pred
+    take:
+    ribotish_predict_ch
+    proteomics_reads
 
-	// create database
-	ribo_db
+    main:
+    WORKSPACE(ribotish_predict_ch)
 
-	// generate and change the params file for msfragger
-	change_file_python_script
+    DATABASE(WORKSPACE.out, ribotish_predict_ch)
 
-	// msfragger (search mzML files against database to find hits (peptides identified in peptidomics data))
-	peptidomics_reads
+    GENERATE_CHANGE_PARAMS(DATABASE.out, params.change_file_script)
 
-	main:
-	
-	WORKSPACE( ribo_pred )
-	workspace_init = WORKSPACE.out.workspace_init
+    MSFRAGGER(
+        proteomics_reads.collect(),
+        GENERATE_CHANGE_PARAMS.out,
+        DATABASE.out
+    )
 
-	DATABASE( workspace_init, ribo_db )
-	philosopher_db = DATABASE.out.database
+    PEPTIDEPROPHET(DATABASE.out, MSFRAGGER.out)
 
-	GENERATE_CHANGE_PARAMS( philosopher_db, change_file_python_script )
-	params = GENERATE_CHANGE_PARAMS.out.params
+    PROTEINPROPHET(PEPTIDEPROPHET.out)
 
-	MSFRAGGER( peptidomics_reads, params, philosopher_db )
-	pepXML = MSFRAGGER.out.pepXML
+    FILTER_FDR(
+        PEPTIDEPROPHET.out,
+        PROTEINPROPHET.out
+    )
 
-	PEPTIDEPROPHET( ribo_db, pepXML )
-	interact_pep_xml = PEPTIDEPROPHET.out.interact_pep_xml
+    FREEQUANT(FILTER_FDR.out)
 
-	PROTEINPROPHET( interact_pep_xml )
-	prot_xml = PROTEINPROPHET.out.prot_xml
+    REPORT(FREEQUANT.out)
+    report = REPORT.out
 
-	FILTER_FDR( interact_pep_xml, prot_xml )	
+    IONQUANT(
+        FILTER_FDR.out,
+        MSFRAGGER.out
+    )
 
-	QUANTIFY( FILTER_FDR.out.filter_fdr)
+    //CLEAN_UP_WORKSPACE(REPORT.out)
 
-	REPORT( QUANTIFY.out.quant )
-	msstats = REPORT.out.msstats
-
-	CLEAN_UP_WORKSPACE( REPORT.out.msstats )
-
-	emit:
-	msstats
-
-
+    emit:
+    report
 
 }

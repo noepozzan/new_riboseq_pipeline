@@ -1,8 +1,12 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl=2
+
 process TRIM_FIRST_BASES {
 
     label "cutadapt"
 
-    publishDir "results/trim_first_bases", mode: 'copy'
+    publishDir "${params.reads_dir}/trim_first_bases", mode: 'copy'
 
     input:
     path reads
@@ -16,12 +20,13 @@ process TRIM_FIRST_BASES {
     prefix=\$(echo \$input | cut -d '.' -f 1)
 
     (cutadapt \
-    --cut ${params.cut} \
-    --minimum-length ${params.minimum_length} \
-    ${reads} | gzip > \
-    \${prefix}.trimmed_first_bases) \
-    &> \${prefix}_trim_first_bases.log
+        --cut ${params.cut} \
+        --minimum-length ${params.minimum_length} \
+        ${reads} | gzip > \
+        \${prefix}.trimmed_first_bases) \
+        &> \${prefix}_trim_first_bases.log
 
     """
 
 }
+

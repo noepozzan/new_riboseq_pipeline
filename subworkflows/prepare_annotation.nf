@@ -1,3 +1,5 @@
+nextflow.enable.dsl=2
+
 include { SELECT_LONGEST_CODING_TRANSCRIPT } from '../modules/select_longest_coding_transcript.nf'
 include { EXTRACT_TRANSCRIPT_SEQUENCES } from '../modules/extract_transcript_sequences.nf'
 include { CREATE_TAB_DELIMITED_CDS_FILE } from '../modules/create_tab_delimited_cds_file.nf'
@@ -7,22 +9,32 @@ workflow PREPARE_ANNOTATION {
 
     take:
     gtf
-	lct_python_script // select_longest_coding_transcript.py
 	genome
-	tsv_cds_python_script // create_tab_delimited_CDS_file.py
 
     main:
     
-	SELECT_LONGEST_CODING_TRANSCRIPT( gtf, lct_python_script )
+	SELECT_LONGEST_CODING_TRANSCRIPT(
+		gtf,
+		params.lct_script
+	)
 	longest_ct_gtf = SELECT_LONGEST_CODING_TRANSCRIPT.out.longest_ct
 
-	EXTRACT_TRANSCRIPT_SEQUENCES( longest_ct_gtf, genome )
+	EXTRACT_TRANSCRIPT_SEQUENCES(
+		longest_ct_gtf,
+		genome
+	)
 	longest_ct_fa = EXTRACT_TRANSCRIPT_SEQUENCES.out.transcript_sequences
 
-	CREATE_TAB_DELIMITED_CDS_FILE( longest_ct_gtf, longest_ct_fa, tsv_cds_python_script ) 
+	CREATE_TAB_DELIMITED_CDS_FILE(
+		longest_ct_gtf,
+		longest_ct_fa,
+		params.cds_script
+	)
 	cds_tsv = CREATE_TAB_DELIMITED_CDS_FILE.out.cds_tsv
 
-	CREATE_BED_CDS_FILE( cds_tsv )
+	CREATE_BED_CDS_FILE(
+		cds_tsv
+	)
 	cds_bed = CREATE_BED_CDS_FILE.out.cds_bed
 
     emit:

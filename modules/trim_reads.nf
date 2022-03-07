@@ -1,8 +1,11 @@
 process TRIM_READS {
 
+    //errorStrategy { sleep(Math.pow(2, task.attempt) * 200 as long); return 'retry' }
+    //maxRetries 5
+
     label "fastx"
 
-    publishDir "results/trim_reads", mode: 'copy'
+    publishDir "${params.reads_dir}/trim_reads", mode: 'copy'
 
     input:
     path reads
@@ -16,15 +19,11 @@ process TRIM_READS {
     prefix=\$(echo \$input | cut -d '.' -f 1)
 
     fastq_quality_trimmer \
-    ${params.trim_reads_v} \
-    -l ${params.trim_reads_l} \
-    -t ${params.trim_reads_t} \
-    -Q ${params.trim_reads_Q} \
-    ${params.trim_reads_z} \
-    -i <(zcat ${reads}) \
-    -o \${prefix}.pro_trimmed 2> \${prefix}_trim_reads.log
+        ${params.trim_reads_args} \
+        -i <(zcat ${reads}) \
+        -o \${prefix}.pro_trimmed \
+        &> \${prefix}_trim_reads.log
 
     """
 
 }
-

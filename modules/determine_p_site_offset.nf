@@ -21,12 +21,12 @@ process DETERMINE_P_SITE_OFFSET {
     cp ${bam_folder}/* .
 
     python ${script_py} \
-    --bam \${prefix}.transcripts_mapped_unique_sorted_bam \
-    --cds_coordinates ${transcript_id_gene_id_CDS} \
-    --outdir \${prefix}_determine_p_site_offset \
-    2> \${prefix}_determine_p_site_offset.log
+    	--bam \${prefix}*.bam \
+    	--cds_coordinates ${transcript_id_gene_id_CDS} \
+    	--outdir \${prefix}_p_site_offset \
+    	2> \${prefix}_p_site_offset.log
 
-    cp \${prefix}_determine_p_site_offset/* .
+    cp \${prefix}_p_site_offset/* .
     mv alignment_offset.json \${prefix}.alignment_offset.json
 
     """

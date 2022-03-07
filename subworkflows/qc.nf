@@ -1,72 +1,56 @@
-include { REMOVE_MULTIMAPPERS } from '../modules/remove_multimappers.nf'
+nextflow.enable.dsl=2
+
 include { READ_LENGTH_HISTOGRAM } from '../modules/read_length_histogram.nf'
 include { DETERMINE_P_SITE_OFFSET } from '../modules/determine_p_site_offset.nf'
 include { COUNT_READS } from '../modules/count_reads.nf'
 include { CHECK_PERIODICITY } from '../modules/check_periodicity.nf'
-include { FILTER_LENGTH_OFFSET } from '../modules/filter_length_offset.nf'
+include { FILTER_LENGTHS_OFFSETS } from '../modules/filter_length_offset.nf'
 
 
 workflow QC {
 
 	take:
-	
-	// remove reads that map to multiple loci
 	unique_sam
-
-	// histogram of riboseq read length
-	histogram_python_script
-
-	// determine p site offset
 	bam_folder
 	id_CDS
-	offset_python_script
-
-	// count reads
-	count_reads_python_script
-	
-	// check periodicity of riboseq reads
-	periodicity_python_script
-
-	// filter reads based on read length and offsets
-	filter_python_script
 
 	main:
-/*
-	REMOVE_MULTIMAPPERS(
-		sam
-	)
-	unique_sam = REMOVE_MULTIMAPPERS.out.unique_sam
-*/
 	
-	READ_LENGTH_HISTOGRAM( unique_sam, histogram_python_script )
+	READ_LENGTH_HISTOGRAM(
+		unique_sam,
+		params.histogram_script
+	)
 	
 	DETERMINE_P_SITE_OFFSET(
 		bam_folder,
 		id_CDS,
-		offset_python_script
+		params.offsets_script
 	)
 	offsets = DETERMINE_P_SITE_OFFSET.out.offset
 
+	// pair outputs to feed matching files into downstream processes
+	bam_folder
+        .combine(offsets)
+        .filter{ it[0].baseName.split("\\.")[0] == it[1].baseName.split("\\.")[0] }
+        .set{ bam_folder_offsets }
+
 	COUNT_READS(
-		bam_folder,
+		bam_folder_offsets,
 		id_CDS,
-		offsets,
-		count_reads_python_script
+		params.count_reads_script
 	)
 	
 	CHECK_PERIODICITY(
-		bam_folder,
+		bam_folder_offsets,
 		id_CDS,
-		offsets,
-		periodicity_python_script
+		params.check_periodicity_script
 	)
 
-	FILTER_LENGTH_OFFSET(
-		bam_folder,
-		offsets,
-		filter_python_script
+	FILTER_LENGTHS_OFFSETS(
+		bam_folder_offsets,
+		params.filter_lengths_reads_script
 	)
-	unique_a_site = FILTER_LENGTH_OFFSET.out.unique	
+	unique_a_site = FILTER_LENGTHS_OFFSETS.out	
 
 	emit:
 	unique_a_site	

@@ -3,33 +3,39 @@ process WORKSPACE {
     label 'philosopher'
 
     input:
-    path 'riboseq'
+    path ribotish_speptide
 
     output:
-    val 'workspace_init', emit: workspace_init
+    val 'tubel'
 
     script:
     """
+    # create new working directory (remove old if applicable,
+    # to be sure that there is a fresh new workspace)
     rm -rf ${params.workspace}
     mkdir ${params.workspace}
 
-    mzML_dir=${params.proteomics_reads}
-    parentdir_mzML="\$(dirname "\$mzML_dir")"
+    # move input files to working directory
 
-    mv \${parentdir_mzML}/* ${params.workspace}/
+    for VAR in ${params.proteomics_reads}
+    do
+        mv \$VAR ${params.workspace}/
+    done
 
-    db_dir=${params.philosopher_db}
-    parentdir_db="\$(dirname "\$db_dir")"
+    # move the predicted sPeptides file to the workspace
+    mv ${ribotish_speptide} ${params.workspace}/
 
-    mv ${params.philosopher_db} ${params.workspace}/
-
-    # initialize philosopher workspace in workspace
+    # initialize philosopher in the philosopher
+    # working directory which is called workspace
     cd ${params.workspace}
     philosopher workspace --clean
     philosopher workspace --init
 
-    cp *.mzML \$parentdir_mzML
-	cp *.fasta \$parentdir_db
+    # copy input files back to data folder as a backup
+    dir=${params.proteomics_reads}
+    parentdir="\$(dirname "\$dir")"
+    cp *.mzML \$parentdir
+
     """
 
 }

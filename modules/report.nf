@@ -2,22 +2,30 @@ process REPORT {
 
     label "philosopher"
 
-    publishDir "results/report", mode: 'copy'
+    echo true
+
+    publishDir "${params.philosopher_dir}/report", mode: 'copy'
 
     input:
     val freequant
 
     output:
-    path 'msstats.csv', emit: msstats
+    path '*'
 
     script:
     """
     workd=\$(pwd)
 
     cd ${params.workspace}
-    philosopher report --msstats 2> report.out
 
-	cp msstats.csv peptide.tsv psm.tsv ion.tsv  \$workd
+    # reports about the findings for easy interpretation
+    philosopher report \
+        --msstats \
+        --decoys \
+        2> report.out
+
+    cp msstats.csv peptide.tsv psm.tsv ion.tsv  \$workd
     """
 
 }
+

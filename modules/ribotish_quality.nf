@@ -9,7 +9,7 @@ process RIBOTISH_QUALITY {
     path gtf_file
 
     output:
-    path '*.para.py', emit: offset
+    path '*.para.py', emit: offsets
     path '*.pdf', emit: ribo_pdf
     path '*.txt', emit: ribo_txt
 
